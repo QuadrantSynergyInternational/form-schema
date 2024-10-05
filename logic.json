@@ -1,0 +1,815 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema",
+  "$id": "json.logic",
+  "anyOf": [
+    { "$ref": "#/definitions/logicaloperations" },
+    { "$ref": "#/definitions/numberoperations" },
+    { "$ref": "#/definitions/arrayoperations" },
+    { "$ref": "#/definitions/stringoperations" },
+    { "$ref": "#/definitions/customoperations" },
+    { "$ref": "#/definitions/exceloperations" },
+    { "$ref": "#/definitions/extendedboolean" },
+    { "$ref": "#/definitions/extendednumeral" },
+    { "$ref": "#/definitions/extendedstring" },
+    { "$ref": "#/definitions/extendedarray" },
+    { "$ref": "#/definitions/valuereference" }
+  ],
+  "definitions": {
+    "logicaloperations": {
+      "description": "any operation whose outcome is a boolean",
+      "type": "object",
+      "properties": {
+        "and": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/extendedboolean"
+          },
+          "minItems": 1
+        },
+        "or": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/extendedboolean"
+          },
+          "minItems": 1
+        },
+        "!": {
+          "oneOf": [
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/extendedboolean"
+              },
+              "minItems": 1,
+              "maxItems": 1
+            },
+            {
+              "$ref": "#/definitions/extendedboolean"
+            }
+          ]
+        },
+        "!!": {
+          "oneOf": [
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/extendedboolean"
+              },
+              "minItems": 1,
+              "maxItems": 1
+            },
+            {
+              "$ref": "#/definitions/extendedboolean"
+            }
+          ]
+        },
+        "in": {
+          "type": "array",
+          "prefixItems": [
+            {
+              "anyOf": [
+                { "$ref": "#/definitions/extendedstring" },
+                { "$ref": "#/definitions/extendednumeral" },
+                { "$ref": "#/definitions/extendedboolean" },
+                { "$ref": "#/definitions/extendedarray" }
+              ]
+            },
+            {
+              "anyOf": [
+                { "$ref": "#/definitions/extendedarray" },
+                { "$ref": "#/definitions/extendedstring" }
+              ]
+            }
+          ],
+          "items": false
+        },
+        "==": {
+          "type": "array",
+          "items": {
+            "anyOf": [
+              { "$ref": "#/definitions/extendedstring" },
+              { "$ref": "#/definitions/extendednumeral" },
+              { "$ref": "#/definitions/extendedboolean" },
+              { "$ref": "#/definitions/extendedarray" }
+            ]
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "!=": {
+          "type": "array",
+          "items": {
+            "anyOf": [
+              { "$ref": "#/definitions/extendedstring" },
+              { "$ref": "#/definitions/extendednumeral" },
+              { "$ref": "#/definitions/extendedboolean" },
+              { "$ref": "#/definitions/extendedarray" }
+            ]
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "===": {
+          "type": "array",
+          "items": {
+            "anyOf": [
+              { "$ref": "#/definitions/extendedstring" },
+              { "$ref": "#/definitions/extendednumeral" },
+              { "$ref": "#/definitions/extendedboolean" },
+              { "$ref": "#/definitions/extendedarray" }
+            ]
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "!==": {
+          "type": "array",
+          "items": {
+            "anyOf": [
+              { "$ref": "#/definitions/extendedstring" },
+              { "$ref": "#/definitions/extendednumeral" },
+              { "$ref": "#/definitions/extendedboolean" },
+              { "$ref": "#/definitions/extendedarray" }
+            ]
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "<=": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/extendednumeral"
+          },
+          "minItems": 2,
+          "maxItems": 3
+        },
+        ">=": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/extendednumeral"
+          },
+          "minItems": 2,
+          "maxItems": 3
+        },
+        "<": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/extendednumeral"
+          },
+          "minItems": 2,
+          "maxItems": 3
+        },
+        ">": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/extendednumeral"
+          },
+          "minItems": 2,
+          "maxItems": 3
+        },
+        "if": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/extendedboolean"
+          },
+          "minItems": 3
+        },
+        "all": {
+          "type": "array",
+          "prefixItems": [
+            {
+              "$ref": "#/definitions/extendedarray"
+            },
+            {
+              "anyOf": [
+                { "$ref": "#/definitions/extendedarray" },
+                { "$ref": "#/definitions/extendedstring" },
+                { "$ref": "#/definitions/extendednumeral" },
+                { "$ref": "#/definitions/extendedboolean" }
+              ]
+            }
+          ],
+          "items": false
+        },
+        "none": {
+          "type": "array",
+          "prefixItems": [
+            {
+              "$ref": "#/definitions/extendedarray"
+            },
+            {
+              "anyOf": [
+                { "$ref": "#/definitions/extendedarray" },
+                { "$ref": "#/definitions/extendedstring" },
+                { "$ref": "#/definitions/extendednumeral" },
+                { "$ref": "#/definitions/extendedboolean" }
+              ]
+            }
+          ],
+          "items": false
+        },
+        "some": {
+          "type": "array",
+          "prefixItems": [
+            {
+              "$ref": "#/definitions/extendedarray"
+            },
+            {
+              "anyOf": [
+                { "$ref": "#/definitions/extendedarray" },
+                { "$ref": "#/definitions/extendedstring" },
+                { "$ref": "#/definitions/extendednumeral" },
+                { "$ref": "#/definitions/extendedboolean" }
+              ]
+            }
+          ],
+          "items": false
+        },
+        "ISEMPTY": {
+          "type": "array",
+          "prefixItems": [
+            {
+              "$ref": "#/definitions/extendedarray"
+            }
+          ],
+          "items": false
+        }
+      },
+      "additionalProperties": false,
+      "minProperties": 1,
+      "maxProperties": 1
+    },
+    "numberoperations": {
+      "description": "any operation whose outcome is a number",
+      "type": "object",
+      "properties": {
+        "and": {
+          "type": "array",
+          "contains": {
+            "$ref": "#/definitions/extendednumeral"
+          },
+          "minItems": 1
+        },
+        "or": {
+          "type": "array",
+          "contains": {
+            "$ref": "#/definitions/extendednumeral"
+          },
+          "minItems": 1
+        },
+        "+": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/extendednumeral"
+          },
+          "minItems": 1
+        },
+        "^": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/extendednumeral"
+          },
+          "minItems": 2
+        },
+        "-": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/extendednumeral"
+          },
+          "minItems": 1,
+          "maxItems": 2
+        },
+        "*": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/extendednumeral"
+          },
+          "minItems": 2
+        },
+        "/": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/extendednumeral"
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "%": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/extendednumeral"
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "min": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/extendednumeral"
+          },
+          "minItems": 2
+        },
+        "max": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/extendednumeral"
+          },
+          "minItems": 2
+        },
+        "reduce": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/extendednumeral"
+          }
+        },
+        "ROUND": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/extendednumeral"
+          },
+          "maxItems": 1
+        }
+      },
+      "additionalProperties": false,
+      "minProperties": 1,
+      "maxProperties": 1
+    },
+    "arrayoperations": {
+      "description": "any operation whose outcome is an array",
+      "type": "object",
+      "properties": {
+        "and": {
+          "type": "array",
+          "contains": {
+            "$ref": "#/definitions/extendedarray"
+          },
+          "minItems": 1
+        },
+        "or": {
+          "type": "array",
+          "contains": {
+            "$ref": "#/definitions/extendedarray"
+          },
+          "minItems": 1
+        },
+        "map": {
+          "type": "array",
+          "prefixItems": [
+            {
+              "$ref": "#/definitions/extendedarray"
+            },
+            {
+              "anyOf": [
+                { "$ref": "#/definitions/numberoperations" },
+                { "$ref": "#/definitions/stringoperations" },
+                { "$ref": "#/definitions/arrayoperations" },
+                { "$ref": "#/definitions/logicaloperations" },
+                { "$ref": "#/definitions/customoperations" },
+                { "$ref": "#/definitions/exceloperations" }
+              ]
+            }
+          ],
+          "items": false
+        },
+        "filter": {
+          "type": "array",
+          "prefixItems": [
+            {
+              "$ref": "#/definitions/extendedarray"
+            },
+            {
+              "anyOf": [
+                { "$ref": "#/definitions/extendedarray" },
+                { "$ref": "#/definitions/extendedstring" },
+                { "$ref": "#/definitions/extendednumeral" },
+                { "$ref": "#/definitions/extendedboolean" }
+              ]
+            }
+          ],
+          "items": false
+        },
+        "merge": {
+          "type": "array",
+          "items": {
+            "anyOf": [
+              { "$ref": "#/definitions/extendedarray" },
+              { "$ref": "#/definitions/extendedstring" },
+              { "$ref": "#/definitions/extendednumeral" },
+              { "$ref": "#/definitions/extendedboolean" }
+            ]
+          }
+        },
+        "missing": {
+          "type": "array",
+          "items": {
+            "anyOf": [
+              { "$ref": "#/definitions/extendedarray" },
+              { "$ref": "#/definitions/extendedstring" },
+              { "$ref": "#/definitions/extendednumeral" },
+              { "$ref": "#/definitions/extendedboolean" }
+            ]
+          }
+        }
+      },
+      "additionalProperties": false,
+      "minProperties": 1,
+      "maxProperties": 1
+    },
+    "stringoperations": {
+      "description": "any operation whose outcome is a string",
+      "type": "object",
+      "properties": {
+        "and": {
+          "type": "array",
+          "contains": {
+            "$ref": "#/definitions/extendedstring"
+          },
+          "minItems": 1
+        },
+        "or": {
+          "type": "array",
+          "contains": {
+            "$ref": "#/definitions/extendedstring"
+          },
+          "minItems": 1
+        },
+        "cat": {
+          "type": "array",
+          "items": {
+            "anyOf": [
+              { "$ref": "#/definitions/extendedarray" },
+              { "$ref": "#/definitions/extendedstring" },
+              { "$ref": "#/definitions/extendednumeral" },
+              { "$ref": "#/definitions/extendedboolean" }
+            ]
+          }
+        },
+        "substr": {
+          "type": "array",
+          "prefixItems": [
+            {
+              "$ref": "#/definitions/extendedstring"
+            }
+          ],
+          "items": {
+            "$ref": "#/definitions/extendednumeral"
+          },
+          "minItems": 2,
+          "maxItems": 3
+        },
+        "CONCAT": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/extendedstring"
+          },
+          "minItems": 1
+        }
+      },
+      "additionalProperties": false,
+      "minProperties": 1,
+      "maxProperties": 1
+    },
+    "customoperations": {
+      "description": "any custom operation",
+      "type": "object",
+      "properties": {
+        "customFunction": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/extendedarray"
+          },
+          "minItems": 1
+        }
+      },
+      "additionalProperties": false,
+      "minProperties": 1,
+      "maxProperties": 1
+    },
+    "exceloperations": {
+      "description": "any excel function operation",
+      "type": "object",
+      "properties": {
+        "NOW": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/extendedarray"
+          },
+          "maxItems": 0
+        },
+        "TODAY": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/extendedarray"
+          },
+          "maxItems": 0
+        },
+        "DATEDIF": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/extendedarray"
+          },
+          "minItems": 3
+        },
+        "DATE": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/extendedarray"
+          },
+          "minItems": 3
+        },
+        "YEAR": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/extendedarray"
+          },
+          "minItems": 1
+        },
+        "MONTH": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/extendedarray"
+          },
+          "minItems": 1
+        },
+        "DAY": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/extendedarray"
+          },
+          "minItems": 1
+        },
+        "VALUEAT": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/extendedarray"
+          },
+          "minItems": 3
+        },
+        "MAXAT": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/extendedarray"
+          },
+          "minItems": 2
+        },
+        "INDEXAT": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/extendedarray"
+          },
+          "minItems": 3
+        },
+        "RANGEOPTIONS": {
+          "type": "array",
+          "items": false,
+          "prefixItems": [
+            {
+              "$ref": "#/definitions/extendedarray"
+            },
+            {
+              "$ref": "#/definitions/extendedarray"
+            }
+          ],
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "MAPOPTIONS": {
+          "type": "array",
+          "items": false,
+          "prefixItems": [
+            {
+              "$ref": "#/definitions/extendedarray"
+            },
+            {
+              "type": "string"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "minItems": 3,
+          "maxItems": 3
+        },
+        "MAPOPTIONSIF": {
+          "type": "array",
+          "items": false,
+          "prefixItems": [
+            {
+              "$ref": "#/definitions/extendedarray"
+            },
+            {
+              "type": "string"
+            },
+            {
+              "type": "string"
+            },
+            {
+              "type": "array",
+              "items": false,
+              "prefixItems": [
+                {
+                  "$ref": "#/definitions/extendedarray"
+                },
+                { "enum": ["==", "<=", "<", ">", ">=", "!="] },
+                { "type": "string" }
+              ]
+            }
+          ],
+          "minItems": 4,
+          "maxItems": 4
+        }
+      },
+      "additionalProperties": false,
+      "minProperties": 1,
+      "maxProperties": 1
+    },
+    "valuereference": {
+      "description": "dynamic reference to a value",
+      "type": "object",
+      "properties": {
+        "var": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "array",
+              "prefixItems": [
+                {
+                  "type": "string"
+                }
+              ],
+              "items": {
+                "type": ["string", "number", "boolean"]
+              }
+            }
+          ]
+        },
+        "EMPTY": {
+          "type": "array",
+          "items": false
+        },
+        "$ref": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "array",
+              "prefixItems": [
+                {
+                  "type": "string"
+                }
+              ],
+              "items": {
+                "type": ["string", "number", "boolean"]
+              }
+            }
+          ]
+        },
+        "return": {
+          "type": ["string", "number", "boolean"]
+        },
+        "IFNULL": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/extendedarray"
+          },
+          "minItems": 2
+        }
+      },
+      "additionalProperties": false
+    },
+    "extendedboolean": {
+      "description": "any value, function or reference that behaves like a boolean when resolved",
+      "oneOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "$ref": "#/definitions/logicaloperations"
+        },
+        {
+          "$ref": "#/definitions/valuereference"
+        }
+      ]
+    },
+    "extendednumeral": {
+      "description": "any value, function or reference that behaves like a number when resolved",
+      "oneOf": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "string",
+          "pattern": "^[0-9]+([,.][0-9]+)?$"
+        },
+        {
+          "type": "string",
+          "pattern": "^\\$[a-zA-Z0-9_]+$"
+        },
+        {
+          "$ref": "#/definitions/valuereference"
+        },
+        {
+          "$ref": "#/definitions/numberoperations"
+        },
+        {
+          "$ref": "#/definitions/exceloperations"
+        },
+        {
+          "$ref": "#/definitions/customoperations"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "if": {
+              "type": "array",
+              "prefixItems": [
+                {
+                  "$ref": "#/definitions/extendedboolean"
+                }
+              ],
+              "items": {
+                "$ref": "#/definitions/extendednumeral"
+              },
+              "minItems": 3
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "extendedstring": {
+      "description": "any value, function or reference that behaves like a string when resolved",
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "$ref": "#/definitions/stringoperations"
+        },
+        {
+          "$ref": "#/definitions/valuereference"
+        },
+        {
+          "$ref": "#/definitions/exceloperations"
+        },
+        {
+          "$ref": "#/definitions/customoperations"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "if": {
+              "type": "array",
+              "prefixItems": [
+                {
+                  "$ref": "#/definitions/extendedboolean"
+                }
+              ],
+              "items": {
+                "$ref": "#/definitions/extendedstring"
+              },
+              "minItems": 3
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "extendedarray": {
+      "description": "any value, function or reference that behaves like an array when resolved",
+      "oneOf": [
+        {
+          "type": ["array", "string", "number", "boolean"]
+        },
+        { "$ref": "#/definitions/logicaloperations" },
+        { "$ref": "#/definitions/numberoperations" },
+        { "$ref": "#/definitions/arrayoperations" },
+        { "$ref": "#/definitions/stringoperations" },
+        { "$ref": "#/definitions/customoperations" },
+        { "$ref": "#/definitions/exceloperations" },
+        { "$ref": "#/definitions/valuereference" },
+        {
+          "type": "object",
+          "properties": {
+            "if": {
+              "type": "array",
+              "prefixItems": [
+                {
+                  "$ref": "#/definitions/extendedboolean"
+                }
+              ],
+              "items": {
+                "$ref": "#/definitions/extendedarray"
+              },
+              "minItems": 3
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    }
+  }
+}

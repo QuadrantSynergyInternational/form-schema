@@ -1,0 +1,950 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema",
+  "$id": "json.eval.schema",
+  "title": "JSON Schema",
+  "type": "object",
+  "definitions": {
+    "jsonLogic": {
+      "$ref": "https://raw.githubusercontent.com/QuadrantSynergyInternational/form-schema/refs/heads/main/logic.json"
+    },
+    "simpleTypes": {
+      "enum": ["array", "boolean", "number", "object", "string"]
+    },
+    "logicOrRemoteOptions": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "url": {
+          "type": "string"
+        },
+        "path": {
+          "type": "string",
+          "description": "Data Path to get Data Array from API Response"
+        },
+        "labelPath": {
+          "type": "string",
+          "description": "Path to get List Label Value from API Response Array Item"
+        },
+        "valuePath": {
+          "type": "string",
+          "description": "Path to get List Value from API Response Array Item"
+        },
+        "method": {
+          "type": "string",
+          "enum": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+          "description": "API method to fetch"
+        },
+        "params": {
+          "type": "object",
+          "patternProperties": {
+            "^(.*)$": {
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "$evaluation": {
+                      "$ref": "#/definitions/jsonLogic"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "$evaluation": {
+          "$ref": "#/definitions/jsonLogic"
+        }
+      }
+    },
+    "preDefinedOptions": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {
+            "type": "object",
+            "required": ["label", "value"],
+            "properties": {
+              "label": {
+                "type": "string"
+              },
+              "value": {
+                "type": ["integer", "boolean", "number", "string"]
+              }
+            }
+          },
+          {
+            "type": ["string", "boolean", "integer", "number"]
+          }
+        ]
+      }
+    },
+    "simpleFieldTypes": {
+      "enum": [
+        "other",
+        "section",
+        "textinput",
+        "fileinput",
+        "multiplefileinput",
+        "toggleinput",
+        "numberinput",
+        "calendar",
+        "datepicker",
+        "daterangepicker",
+        "datetimepicker",
+        "select",
+        "multipleselect",
+        "options",
+        "multipleoptions",
+        "table",
+        "custominput",
+        "checkbox",
+        "multiplecheckbox"
+      ]
+    },
+    "fieldRules": {
+      "additionalProperties": false,
+      "type": "object",
+      "properties": {
+        "required": {
+          "oneOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "string"
+                },
+                "message": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "boolean"
+                },
+                "$evaluation": {
+                  "$ref": "#/definitions/jsonLogic"
+                }
+              }
+            }
+          ]
+        },
+        "minLength": {
+          "oneOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "string"
+                },
+                "message": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "number"
+                },
+                "$evaluation": {
+                  "$ref": "#/definitions/jsonLogic"
+                }
+              }
+            }
+          ]
+        },
+        "maxLength": {
+          "oneOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "string"
+                },
+                "message": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "number"
+                },
+                "$evaluation": {
+                  "$ref": "#/definitions/jsonLogic"
+                }
+              }
+            }
+          ]
+        },
+        "minValue": {
+          "oneOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "string"
+                },
+                "message": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "number"
+                },
+                "$evaluation": {
+                  "$ref": "#/definitions/jsonLogic"
+                }
+              }
+            }
+          ]
+        },
+        "maxValue": {
+          "oneOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "string"
+                },
+                "message": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "number"
+                },
+                "$evaluation": {
+                  "$ref": "#/definitions/jsonLogic"
+                }
+              }
+            }
+          ]
+        },
+        "pattern": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "string"
+                },
+                "message": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "string"
+                },
+                "$evaluation": {
+                  "$ref": "#/definitions/jsonLogic"
+                }
+              }
+            }
+          ]
+        },
+        "evaluation": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["code", "$evaluation"],
+            "properties": {
+              "code": {
+                "type": "string"
+              },
+              "message": {
+                "type": "string"
+              },
+              "data": {
+                "type": "object",
+                "patternProperties": {
+                  "^(.*)$": {
+                    "type": "object",
+                    "properties": {
+                      "$evaluation": {
+                        "$ref": "#/definitions/jsonLogic"
+                      }
+                    }
+                  }
+                }
+              },
+              "$evaluation": {
+                "$ref": "#/definitions/jsonLogic"
+              }
+            }
+          },
+          "minItems": 1
+        }
+      }
+    },
+    "simpleField": {
+      "properties": {
+        "type": {
+          "oneOf": [
+            {
+              "$ref": "#/definitions/simpleTypes"
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "description": "Should return string",
+              "properties": {
+                "$evaluation": {
+                  "$ref": "#/definitions/jsonLogic"
+                }
+              }
+            }
+          ]
+        },
+        "title": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "description": "Should return string",
+              "properties": {
+                "$evaluation": {
+                  "$ref": "#/definitions/jsonLogic"
+                }
+              }
+            }
+          ]
+        },
+        "subtitle": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "description": "Should return string",
+              "properties": {
+                "$evaluation": {
+                  "$ref": "#/definitions/jsonLogic"
+                }
+              }
+            }
+          ]
+        },
+        "description": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "description": "Should return string",
+              "properties": {
+                "$evaluation": {
+                  "$ref": "#/definitions/jsonLogic"
+                }
+              }
+            }
+          ]
+        },
+        "placeholder": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "description": "Should return string",
+              "properties": {
+                "$evaluation": {
+                  "$ref": "#/definitions/jsonLogic"
+                }
+              }
+            }
+          ]
+        },
+        "fieldType": {
+          "oneOf": [
+            {
+              "$ref": "#/definitions/simpleFieldTypes"
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "description": "Should return string",
+              "properties": {
+                "$evaluation": {
+                  "$ref": "#/definitions/jsonLogic"
+                }
+              }
+            }
+          ]
+        },
+        "fieldTemplate": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "description": "Should return string",
+              "properties": {
+                "$evaluation": {
+                  "$ref": "#/definitions/jsonLogic"
+                }
+              }
+            }
+          ]
+        },
+        "options": {
+          "oneOf": [
+            { "$ref": "#/definitions/logicOrRemoteOptions" },
+            { "$ref": "#/definitions/preDefinedOptions" }
+          ]
+        },
+        "config": {
+          "type": "object",
+          "properties": {
+            "all": {
+              "type": "object",
+              "patternProperties": {
+                "^(.*)$": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "additionalProperties": true,
+                      "properties": {
+                        "$evaluation": {
+                          "$ref": "#/definitions/jsonLogic"
+                        }
+                      }
+                    },
+                    {
+                      "type": "array"
+                    },
+                    {
+                      "type": "integer"
+                    },
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ]
+                }
+              }
+            },
+            "mobile": {
+              "type": "object"
+            },
+            "tablet": {
+              "type": "object"
+            },
+            "desktop": {
+              "type": "object"
+            },
+            "web": {
+              "type": "object"
+            },
+            "backend": {
+              "type": "object"
+            }
+          }
+        },
+        "properties": {
+          "type": "object",
+          "patternProperties": {
+            "^(.*)$": {
+              "$ref": "#/definitions/simplePattern"
+            }
+          }
+        },
+        "rules": {
+          "$ref": "#/definitions/fieldRules"
+        },
+        "items": {
+          "type": "object",
+          "properties": {
+            "$layout": {
+              "$ref": "#/definitions/simpleLayout"
+            },
+            "properties": {
+              "type": "object",
+              "patternProperties": {
+                "^[a-zA-Z_]+$": {
+                  "$ref": "#/definitions/simplePattern"
+                }
+              }
+            }
+          }
+        },
+        "itemRules": {
+          "$ref": "#/definitions/fieldRules"
+        },
+        "condition": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "hidden": {
+              "oneOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "$evaluation": {
+                      "$ref": "#/definitions/jsonLogic"
+                    }
+                  }
+                }
+              ]
+            },
+            "disabled": {
+              "oneOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "$evaluation": {
+                      "$ref": "#/definitions/jsonLogic"
+                    }
+                  }
+                }
+              ]
+            },
+            "readonly": {
+              "oneOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "$evaluation": {
+                      "$ref": "#/definitions/jsonLogic"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "dependents": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "$ref": {
+                "type": "string"
+              },
+              "$condition": {
+                "$ref": "#/definitions/jsonLogic"
+              },
+              "clear": {
+                "type": "object",
+                "properties": {
+                  "$evaluation": {
+                    "$ref": "#/definitions/jsonLogic"
+                  }
+                }
+              },
+              "value": {
+                "type": "object",
+                "properties": {
+                  "$evaluation": {
+                    "$ref": "#/definitions/jsonLogic"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "events": {
+          "additionalProperties": false,
+          "type": "object",
+          "properties": {
+            "changing": {
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "object",
+                  "description": "$evaluation should return string or null",
+                  "additionalProperties": false,
+                  "properties": {
+                    "$evaluation": {
+                      "$ref": "#/definitions/jsonLogic"
+                    }
+                  }
+                }
+              ]
+            },
+            "changed": {
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "object",
+                  "description": "$evaluation should return string or null",
+                  "additionalProperties": false,
+                  "properties": {
+                    "$evaluation": {
+                      "$ref": "#/definitions/jsonLogic"
+                    }
+                  }
+                }
+              ]
+            },
+            "clearing": {
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "object",
+                  "description": "$evaluation should return string or null",
+                  "additionalProperties": false,
+                  "properties": {
+                    "$evaluation": {
+                      "$ref": "#/definitions/jsonLogic"
+                    }
+                  }
+                }
+              ]
+            },
+            "cleared": {
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "object",
+                  "description": "$evaluation should return string or null",
+                  "additionalProperties": false,
+                  "properties": {
+                    "$evaluation": {
+                      "$ref": "#/definitions/jsonLogic"
+                    }
+                  }
+                }
+              ]
+            },
+            "focusing": {
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "object",
+                  "description": "$evaluation should return string or null",
+                  "additionalProperties": false,
+                  "properties": {
+                    "$evaluation": {
+                      "$ref": "#/definitions/jsonLogic"
+                    }
+                  }
+                }
+              ]
+            },
+            "focused": {
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "object",
+                  "description": "$evaluation should return string or null",
+                  "additionalProperties": false,
+                  "properties": {
+                    "$evaluation": {
+                      "$ref": "#/definitions/jsonLogic"
+                    }
+                  }
+                }
+              ]
+            },
+            "unfocusing": {
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "object",
+                  "description": "$evaluation should return string or null",
+                  "additionalProperties": false,
+                  "properties": {
+                    "$evaluation": {
+                      "$ref": "#/definitions/jsonLogic"
+                    }
+                  }
+                }
+              ]
+            },
+            "unfocused": {
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "object",
+                  "description": "$evaluation should return string or null",
+                  "additionalProperties": false,
+                  "properties": {
+                    "$evaluation": {
+                      "$ref": "#/definitions/jsonLogic"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "value": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "$evaluation": {
+                  "$ref": "#/definitions/jsonLogic"
+                }
+              }
+            }
+          ]
+        },
+        "$layout": {
+          "$ref": "#/definitions/simpleLayout"
+        }
+      }
+    },
+    "simpleLayout": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "TabLayout",
+            "VerticalLayout",
+            "HorizontalLayout",
+            "FlexLayout",
+            "Other"
+          ]
+        },
+        "template": {
+          "type": "string"
+        },
+        "$ref": {
+          "type": "string"
+        },
+        "hideLayout": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "all": {
+              "$ref": "#/definitions/extendedboolean"
+            },
+            "mobile": {
+              "$ref": "#/definitions/extendedboolean"
+            },
+            "tablet": {
+              "$ref": "#/definitions/extendedboolean"
+            },
+            "desktop": {
+              "$ref": "#/definitions/extendedboolean"
+            },
+            "web": {
+              "$ref": "#/definitions/extendedboolean"
+            },
+            "backend": {
+              "$ref": "#/definitions/extendedboolean"
+            }
+          }
+        },
+        "elements": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/simpleLayout"
+          }
+        }
+      }
+    },
+    "extendedboolean": {
+      "oneOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "value": {
+              "oneOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "$evaluation": {
+                      "$ref": "#/definitions/jsonLogic"
+                    }
+                  }
+                }
+              ]
+            },
+            "minWidth": {
+              "oneOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "string"
+                }
+              ]
+            },
+            "maxWidth": {
+              "oneOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "simplePattern": {
+      "type": "object",
+      "additionalProperties": false,
+      "if": {
+        "properties": {
+          "type": {
+            "enum": ["object"]
+          }
+        }
+      },
+      "then": {
+        "required": ["type", "properties"]
+      },
+      "else": {
+        "required": ["type"],
+        "propertyNames": {
+          "not": {
+            "enum": ["properties"]
+          }
+        }
+      },
+      "$ref": "#/definitions/simpleField"
+    },
+    "simpleParams": {
+      "oneOf": [
+        {
+          "type": ["boolean", "integer", "number", "string", "null"]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "$repeat": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/simpleParams"
+              }
+            },
+            "$table": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/simpleParams"
+              }
+            },
+            "$evaluation": {
+              "$ref": "#/definitions/jsonLogic"
+            }
+          },
+          "patternProperties": {
+            "^(.*)$": {
+              "$ref": "#/definitions/simpleParams"
+            }
+          }
+        },
+        {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/simpleParams"
+          }
+        }
+      ]
+    }
+  },
+  "properties": {
+    "$params": {
+      "type": "object",
+      "patternProperties": {
+        "^(.*)$": {
+          "oneOf": [
+            {
+              "$ref": "#/definitions/simpleParams"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/simpleParams"
+              }
+            }
+          ]
+        }
+      },
+      "properties": {
+        "$evalExcludes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "patternProperties": {
+    "^[a-zA-Z_]+$": {
+      "$ref": "#/definitions/simplePattern"
+    }
+  }
+}
