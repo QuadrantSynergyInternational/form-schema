@@ -130,7 +130,19 @@
                   "type": "string"
                 },
                 "value": {
-                  "type": "boolean"
+                  "oneOf": [
+                    {
+                      "type": "boolean"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "$evaluation": {
+                          "$ref": "#/definitions/jsonLogic"
+                        }
+                      }
+                    }
+                  ]
                 },
                 "$evaluation": {
                   "$ref": "#/definitions/jsonLogic"
@@ -154,7 +166,19 @@
                   "type": "string"
                 },
                 "value": {
-                  "type": "number"
+                  "oneOf": [
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "$evaluation": {
+                          "$ref": "#/definitions/jsonLogic"
+                        }
+                      }
+                    }
+                  ]
                 },
                 "$evaluation": {
                   "$ref": "#/definitions/jsonLogic"
@@ -178,7 +202,19 @@
                   "type": "string"
                 },
                 "value": {
-                  "type": "number"
+                  "oneOf": [
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "$evaluation": {
+                          "$ref": "#/definitions/jsonLogic"
+                        }
+                      }
+                    }
+                  ]
                 },
                 "$evaluation": {
                   "$ref": "#/definitions/jsonLogic"
@@ -202,7 +238,19 @@
                   "type": "string"
                 },
                 "value": {
-                  "type": "number"
+                  "oneOf": [
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "$evaluation": {
+                          "$ref": "#/definitions/jsonLogic"
+                        }
+                      }
+                    }
+                  ]
                 },
                 "$evaluation": {
                   "$ref": "#/definitions/jsonLogic"
@@ -226,7 +274,19 @@
                   "type": "string"
                 },
                 "value": {
-                  "type": "number"
+                  "oneOf": [
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "$evaluation": {
+                          "$ref": "#/definitions/jsonLogic"
+                        }
+                      }
+                    }
+                  ]
                 },
                 "$evaluation": {
                   "$ref": "#/definitions/jsonLogic"
@@ -250,7 +310,19 @@
                   "type": "string"
                 },
                 "value": {
-                  "type": "string"
+                  "oneOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "$evaluation": {
+                          "$ref": "#/definitions/jsonLogic"
+                        }
+                      }
+                    }
+                  ]
                 },
                 "$evaluation": {
                   "$ref": "#/definitions/jsonLogic"
@@ -281,6 +353,14 @@
                         "$ref": "#/definitions/jsonLogic"
                       }
                     }
+                  }
+                }
+              },
+              "value": {
+                "type": "object",
+                "properties": {
+                  "$evaluation": {
+                    "$ref": "#/definitions/jsonLogic"
                   }
                 }
               },
