@@ -668,7 +668,7 @@
           ]
         },
         "return": {
-          "type": ["string", "number", "boolean"]
+          "type": ["string", "number", "boolean", "null"]
         },
         "IFNULL": {
           "type": "array",
