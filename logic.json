@@ -622,6 +622,22 @@
           ],
           "minItems": 1
         },
+        "SPLITTEXT": {
+          "type": "array",
+          "prefixItems": [
+            {
+              "$ref": "#/definitions/extendedstring"
+            },
+            {
+              "$ref": "#/definitions/extendedstring"
+            },
+            {
+              "$ref": "#/definitions/extendednumeral"
+            }
+          ],
+          "minItems": 2,
+          "maxItems": 3
+        },
         "RANGEOPTIONS": {
           "type": "array",
           "items": false,
