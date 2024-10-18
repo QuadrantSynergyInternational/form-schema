@@ -613,6 +613,15 @@
           ],
           "minItems": 2
         },
+        "LEN": {
+          "type": "array",
+          "prefixItems": [
+            {
+              "$ref": "#/definitions/extendedstring"
+            }
+          ],
+          "minItems": 1
+        },
         "RANGEOPTIONS": {
           "type": "array",
           "items": false,
