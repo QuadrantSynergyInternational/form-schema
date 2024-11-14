@@ -109,7 +109,9 @@
         "table",
         "custominput",
         "checkbox",
-        "multiplecheckbox"
+        "multiplecheckbox",
+        "button",
+        "signaturepad"
       ]
     },
     "fieldRules": {
@@ -845,6 +847,7 @@
             "VerticalLayout",
             "HorizontalLayout",
             "FlexLayout",
+            "MasonryLayout",
             "Other"
           ]
         },
