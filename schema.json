@@ -66,6 +66,39 @@
         }
       }
     },
+    "BaseConfig": {
+      "type": "object",
+      "patternProperties": {
+        "^(.*)$": {
+          "oneOf": [
+            {
+              "type": "object",
+              "additionalProperties": true,
+              "properties": {
+                "$evaluation": {
+                  "$ref": "#/definitions/jsonLogic"
+                }
+              }
+            },
+            {
+              "type": "array"
+            },
+            {
+              "type": "null"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "string"
+            },
+            {
+              "type": "boolean"
+            }
+          ]
+        }
+      }
+    },
     "preDefinedOptions": {
       "type": "array",
       "items": {
@@ -507,184 +540,22 @@
           "type": "object",
           "properties": {
             "all": {
-              "type": "object",
-              "patternProperties": {
-                "^(.*)$": {
-                  "oneOf": [
-                    {
-                      "type": "object",
-                      "additionalProperties": true,
-                      "properties": {
-                        "$evaluation": {
-                          "$ref": "#/definitions/jsonLogic"
-                        }
-                      }
-                    },
-                    {
-                      "type": "array"
-                    },
-                    {
-                      "type": "null"
-                    },
-                    {
-                      "type": "number"
-                    },
-                    {
-                      "type": "string"
-                    }
-                  ]
-                }
-              }
+              "$ref": "#/definitions/BaseConfig"
             },
             "mobile": {
-              "type": "object",
-              "patternProperties": {
-                "^(.*)$": {
-                  "oneOf": [
-                    {
-                      "type": "object",
-                      "additionalProperties": true,
-                      "properties": {
-                        "$evaluation": {
-                          "$ref": "#/definitions/jsonLogic"
-                        }
-                      }
-                    },
-                    {
-                      "type": "array"
-                    },
-                    {
-                      "type": "null"
-                    },
-                    {
-                      "type": "number"
-                    },
-                    {
-                      "type": "string"
-                    }
-                  ]
-                }
-              }
+              "$ref": "#/definitions/BaseConfig"
             },
             "tablet": {
-              "type": "object",
-              "patternProperties": {
-                "^(.*)$": {
-                  "oneOf": [
-                    {
-                      "type": "object",
-                      "additionalProperties": true,
-                      "properties": {
-                        "$evaluation": {
-                          "$ref": "#/definitions/jsonLogic"
-                        }
-                      }
-                    },
-                    {
-                      "type": "array"
-                    },
-                    {
-                      "type": "null"
-                    },
-                    {
-                      "type": "number"
-                    },
-                    {
-                      "type": "string"
-                    }
-                  ]
-                }
-              }
+              "$ref": "#/definitions/BaseConfig"
             },
             "desktop": {
-              "type": "object",
-              "patternProperties": {
-                "^(.*)$": {
-                  "oneOf": [
-                    {
-                      "type": "object",
-                      "additionalProperties": true,
-                      "properties": {
-                        "$evaluation": {
-                          "$ref": "#/definitions/jsonLogic"
-                        }
-                      }
-                    },
-                    {
-                      "type": "array"
-                    },
-                    {
-                      "type": "null"
-                    },
-                    {
-                      "type": "number"
-                    },
-                    {
-                      "type": "string"
-                    }
-                  ]
-                }
-              }
+              "$ref": "#/definitions/BaseConfig"
             },
             "web": {
-              "type": "object",
-              "patternProperties": {
-                "^(.*)$": {
-                  "oneOf": [
-                    {
-                      "type": "object",
-                      "additionalProperties": true,
-                      "properties": {
-                        "$evaluation": {
-                          "$ref": "#/definitions/jsonLogic"
-                        }
-                      }
-                    },
-                    {
-                      "type": "array"
-                    },
-                    {
-                      "type": "null"
-                    },
-                    {
-                      "type": "number"
-                    },
-                    {
-                      "type": "string"
-                    }
-                  ]
-                }
-              }
+              "$ref": "#/definitions/BaseConfig"
             },
             "backend": {
-              "type": "object",
-              "patternProperties": {
-                "^(.*)$": {
-                  "oneOf": [
-                    {
-                      "type": "object",
-                      "additionalProperties": true,
-                      "properties": {
-                        "$evaluation": {
-                          "$ref": "#/definitions/jsonLogic"
-                        }
-                      }
-                    },
-                    {
-                      "type": "array"
-                    },
-                    {
-                      "type": "null"
-                    },
-                    {
-                      "type": "number"
-                    },
-                    {
-                      "type": "string"
-                    }
-                  ]
-                }
-              }
+              "$ref": "#/definitions/BaseConfig"
             }
           }
         },
