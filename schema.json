@@ -513,7 +513,7 @@
                   "oneOf": [
                     {
                       "type": "object",
-                      "additionalProperties": false,
+                      "additionalProperties": true,
                       "properties": {
                         "$evaluation": {
                           "$ref": "#/definitions/jsonLogic"
@@ -543,7 +543,7 @@
                   "oneOf": [
                     {
                       "type": "object",
-                      "additionalProperties": false,
+                      "additionalProperties": true,
                       "properties": {
                         "$evaluation": {
                           "$ref": "#/definitions/jsonLogic"
@@ -573,7 +573,7 @@
                   "oneOf": [
                     {
                       "type": "object",
-                      "additionalProperties": false,
+                      "additionalProperties": true,
                       "properties": {
                         "$evaluation": {
                           "$ref": "#/definitions/jsonLogic"
@@ -603,7 +603,7 @@
                   "oneOf": [
                     {
                       "type": "object",
-                      "additionalProperties": false,
+                      "additionalProperties": true,
                       "properties": {
                         "$evaluation": {
                           "$ref": "#/definitions/jsonLogic"
@@ -633,7 +633,7 @@
                   "oneOf": [
                     {
                       "type": "object",
-                      "additionalProperties": false,
+                      "additionalProperties": true,
                       "properties": {
                         "$evaluation": {
                           "$ref": "#/definitions/jsonLogic"
@@ -663,7 +663,7 @@
                   "oneOf": [
                     {
                       "type": "object",
-                      "additionalProperties": false,
+                      "additionalProperties": true,
                       "properties": {
                         "$evaluation": {
                           "$ref": "#/definitions/jsonLogic"
