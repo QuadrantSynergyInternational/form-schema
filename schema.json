@@ -513,7 +513,7 @@
                   "oneOf": [
                     {
                       "type": "object",
-                      "additionalProperties": true,
+                      "additionalProperties": false,
                       "properties": {
                         "$evaluation": {
                           "$ref": "#/definitions/jsonLogic"
@@ -522,9 +522,6 @@
                     },
                     {
                       "type": "array"
-                    },
-                    {
-                      "type": "integer"
                     },
                     {
                       "type": "null"
@@ -540,19 +537,154 @@
               }
             },
             "mobile": {
-              "type": "object"
+              "type": "object",
+              "patternProperties": {
+                "^(.*)$": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "$evaluation": {
+                          "$ref": "#/definitions/jsonLogic"
+                        }
+                      }
+                    },
+                    {
+                      "type": "array"
+                    },
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ]
+                }
+              }
             },
             "tablet": {
-              "type": "object"
+              "type": "object",
+              "patternProperties": {
+                "^(.*)$": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "$evaluation": {
+                          "$ref": "#/definitions/jsonLogic"
+                        }
+                      }
+                    },
+                    {
+                      "type": "array"
+                    },
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ]
+                }
+              }
             },
             "desktop": {
-              "type": "object"
+              "type": "object",
+              "patternProperties": {
+                "^(.*)$": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "$evaluation": {
+                          "$ref": "#/definitions/jsonLogic"
+                        }
+                      }
+                    },
+                    {
+                      "type": "array"
+                    },
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ]
+                }
+              }
             },
             "web": {
-              "type": "object"
+              "type": "object",
+              "patternProperties": {
+                "^(.*)$": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "$evaluation": {
+                          "$ref": "#/definitions/jsonLogic"
+                        }
+                      }
+                    },
+                    {
+                      "type": "array"
+                    },
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ]
+                }
+              }
             },
             "backend": {
-              "type": "object"
+              "type": "object",
+              "patternProperties": {
+                "^(.*)$": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "$evaluation": {
+                          "$ref": "#/definitions/jsonLogic"
+                        }
+                      }
+                    },
+                    {
+                      "type": "array"
+                    },
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ]
+                }
+              }
             }
           }
         },

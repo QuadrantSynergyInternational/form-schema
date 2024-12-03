@@ -747,7 +747,15 @@
           ]
         },
         "return": {
-          "type": ["string", "number", "boolean", "null"]
+          "type": [
+            "string",
+            "number",
+            "boolean",
+            "null",
+            "array",
+            "integer",
+            "object"
+          ]
         },
         "IFNULL": {
           "type": "array",
