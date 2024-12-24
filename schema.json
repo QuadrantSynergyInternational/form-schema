@@ -371,7 +371,6 @@
           "type": "array",
           "items": {
             "type": "object",
-            "required": ["code", "$evaluation"],
             "properties": {
               "code": {
                 "type": "string"
