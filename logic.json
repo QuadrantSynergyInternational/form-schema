@@ -545,6 +545,20 @@
           },
           "minItems": 3
         },
+        "MATCH": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/extendedarray"
+          },
+          "minItems": 3
+        },
+        "CHOOSE": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/extendedarray"
+          },
+          "minItems": 3
+        },
         "MAXAT": {
           "type": "array",
           "items": {
