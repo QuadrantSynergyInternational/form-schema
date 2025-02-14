@@ -326,6 +326,21 @@
             "$ref": "#/definitions/extendednumeral"
           },
           "maxItems": 1
+        },
+        "SUM": {
+          "type": "array",
+          "prefixItems": [
+            {
+              "$ref": "#/definitions/extendedarray"
+            },
+            {
+              "$ref": "#/definitions/extendedstring"
+            },
+            {
+              "$ref": "#/definitions/extendednumeral"
+            }
+          ],
+          "items": false
         }
       },
       "additionalProperties": false,
