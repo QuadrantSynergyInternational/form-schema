@@ -276,8 +276,7 @@
           "items": {
             "$ref": "#/definitions/extendednumeral"
           },
-          "minItems": 1,
-          "maxItems": 2
+          "minItems": 1
         },
         "*": {
           "type": "array",
@@ -291,8 +290,7 @@
           "items": {
             "$ref": "#/definitions/extendednumeral"
           },
-          "minItems": 2,
-          "maxItems": 2
+          "minItems": 2
         },
         "%": {
           "type": "array",
