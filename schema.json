@@ -981,6 +981,21 @@
                 "$ref": "#/definitions/simpleParams"
               }
             },
+            "$skipTable": {
+              "oneOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "$evaluation": {
+                      "$ref": "#/definitions/jsonLogic"
+                    }
+                  }
+                }
+              ]
+            },
             "$evaluation": {
               "$ref": "#/definitions/jsonLogic"
             }
