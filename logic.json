@@ -556,7 +556,7 @@
           "items": {
             "$ref": "#/definitions/extendedarray"
           },
-          "minItems": 3
+          "minItems": 2
         },
         "MATCH": {
           "type": "array",
