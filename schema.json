@@ -981,7 +981,7 @@
                 "$ref": "#/definitions/simpleParams"
               }
             },
-            "$skipTable": {
+            "$skip": {
               "oneOf": [
                 {
                   "type": "boolean"
@@ -995,6 +995,26 @@
                   }
                 }
               ]
+            },
+            "$datas": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "$evaluation": {
+                        "$ref": "#/definitions/jsonLogic"
+                      }
+                    }
+                  }
+                }
+              }
             },
             "$evaluation": {
               "$ref": "#/definitions/jsonLogic"
