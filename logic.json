@@ -328,6 +328,20 @@
           },
           "maxItems": 1
         },
+        "ROUNDUP": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/extendednumeral"
+          },
+          "maxItems": 1
+        },
+        "ROUNDDOWN": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/extendednumeral"
+          },
+          "maxItems": 1
+        },
         "SUM": {
           "type": "array",
           "prefixItems": [
