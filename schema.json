@@ -1054,13 +1054,65 @@
         }
       },
       "properties": {
+        "productCode": {
+          "type": "string"
+        },
+        "productName": {
+          "type": "string"
+        },
+        "productType": {
+          "type": "string"
+        },
+        "productFormCode": {
+          "type": "string"
+        },
+        "riplayTemplates": {
+          "type": "string"
+        },
+        "constants": {
+          "type": "object",
+          "patternProperties": {
+            "^(.*)$": {
+              "oneOf": [
+                {
+                  "$ref": "#/definitions/simpleParams"
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/simpleParams"
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "references": {
+          "type": "object",
+          "patternProperties": {
+            "^(.*)$": {
+              "oneOf": [
+                {
+                  "$ref": "#/definitions/simpleParams"
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/simpleParams"
+                  }
+                }
+              ]
+            }
+          }
+        },
         "$evalExcludes": {
           "type": "array",
           "items": {
             "type": "string"
           }
         }
-      }
+      },
+      "required": ["productCode", "productName", "productType", "productFormCode", "riplayTemplates"]
     }
   },
   "patternProperties": {
