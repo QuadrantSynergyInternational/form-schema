@@ -1067,7 +1067,10 @@
           "type": "string"
         },
         "riplayTemplates": {
-          "type": "string"
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         },
         "constants": {
           "type": "object",
@@ -1112,7 +1115,13 @@
           }
         }
       },
-      "required": ["productCode", "productName", "productType", "productFormCode", "riplayTemplates"]
+      "required": [
+        "productCode",
+        "productName",
+        "productType",
+        "productFormCode",
+        "riplayTemplates"
+      ]
     }
   },
   "patternProperties": {
