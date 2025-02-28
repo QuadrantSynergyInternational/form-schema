@@ -996,6 +996,21 @@
                 }
               ]
             },
+            "$clear": {
+              "oneOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "$evaluation": {
+                      "$ref": "#/definitions/jsonLogic"
+                    }
+                  }
+                }
+              ]
+            },
             "$datas": {
               "type": "array",
               "items": {
