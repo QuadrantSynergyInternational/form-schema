@@ -767,6 +767,16 @@
           ],
           "minItems": 3,
           "maxItems": 3
+        },
+        "MULTIPLIES": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/extendednumeral" },
+          "minItems": 2
+        },
+        "DIVIDES": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/extendednumeral" },
+          "minItems": 2
         }
       },
       "additionalProperties": false,
