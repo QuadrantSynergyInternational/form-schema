@@ -173,8 +173,25 @@
           "prefixItems": [
             {
               "$ref": "#/definitions/extendedboolean"
+            },
+            {
+              "anyOf": [
+                { "$ref": "#/definitions/extendedarray" },
+                { "$ref": "#/definitions/extendedstring" },
+                { "$ref": "#/definitions/extendednumeral" },
+                { "$ref": "#/definitions/extendedboolean" }
+              ]
+            },
+            {
+              "anyOf": [
+                { "$ref": "#/definitions/extendedarray" },
+                { "$ref": "#/definitions/extendedstring" },
+                { "$ref": "#/definitions/extendednumeral" },
+                { "$ref": "#/definitions/extendedboolean" }
+              ]
             }
           ],
+          "items": false,
           "minItems": 3
         },
         "all": {
