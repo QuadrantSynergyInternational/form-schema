@@ -771,12 +771,12 @@
         "MULTIPLIES": {
           "type": "array",
           "items": { "$ref": "#/definitions/extendednumeral" },
-          "minItems": 2
+          "minItems": 1
         },
         "DIVIDES": {
           "type": "array",
           "items": { "$ref": "#/definitions/extendednumeral" },
-          "minItems": 2
+          "minItems": 1
         }
       },
       "additionalProperties": false,
