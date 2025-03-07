@@ -170,7 +170,7 @@
         },
         "if": {
           "type": "array",
-          "items": {
+          "prefixItems": {
             "$ref": "#/definitions/extendedboolean"
           },
           "minItems": 3
