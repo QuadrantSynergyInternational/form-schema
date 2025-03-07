@@ -170,9 +170,11 @@
         },
         "if": {
           "type": "array",
-          "prefixItems": {
-            "$ref": "#/definitions/extendedboolean"
-          },
+          "prefixItems": [
+            {
+              "$ref": "#/definitions/extendedboolean"
+            }
+          ],
           "minItems": 3
         },
         "all": {
