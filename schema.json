@@ -1031,6 +1031,37 @@
                 }
               }
             },
+            "$dependents": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "$ref": {
+                    "type": "string"
+                  },
+                  "$condition": {
+                    "$ref": "#/definitions/jsonLogic"
+                  },
+                  "clear": {
+                    "type": "object",
+                    "properties": {
+                      "$evaluation": {
+                        "$ref": "#/definitions/jsonLogic"
+                      }
+                    }
+                  },
+                  "value": {
+                    "type": "object",
+                    "properties": {
+                      "$evaluation": {
+                        "$ref": "#/definitions/jsonLogic"
+                      }
+                    }
+                  }
+                }
+              }
+            },
             "$evaluation": {
               "$ref": "#/definitions/jsonLogic"
             }
