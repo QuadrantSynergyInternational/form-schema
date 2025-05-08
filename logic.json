@@ -283,6 +283,14 @@
           },
           "minItems": 2
         },
+        "**": {
+          "type": "array",
+          "description": "Exponential calculation",
+          "items": {
+            "$ref": "#/definitions/extendednumeral"
+          },
+          "minItems": 2
+        },
         "-": {
           "type": "array",
           "items": {
