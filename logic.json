@@ -599,6 +599,13 @@
           },
           "minItems": 3
         },
+        "MATCHRANGE": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/extendedarray"
+          },
+          "minItems": 4
+        },
         "CHOOSE": {
           "type": "array",
           "items": {
