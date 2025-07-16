@@ -16,25 +16,64 @@
   ],
   "title": "JSON Logic Schema v2",
   "definitions": {
+    "logicalCondition": {
+      "oneOf": [
+        {
+          "type": "array",
+          "minItems": 1,
+          "prefixItems": [
+            {
+              "type": "string",
+              "enum": ["&&", "||"]
+            }
+          ],
+          "items": {
+            "$ref": "#/definitions/logicalCondition"
+          }
+        },
+        {
+          "type": "array",
+          "prefixItems": [
+            {
+              "type": "string",
+              "enum": ["==", "!=", "<", "<=", ">", ">="]
+            },
+            {},
+            {}
+          ],
+          "minItems": 3,
+          "maxItems": 3
+        }
+      ]
+    },
     "logicaloperations": {
-      "description": "any operation whose outcome is a boolean",
+      "description": "Operations that evaluate to a boolean value. These include logical, comparison, and set operations.",
       "type": "object",
       "properties": {
         "and": {
+          "description": "Returns true if all conditions evaluate to true. Accepts one or more boolean expressions or values.",
           "type": "array",
           "items": {
             "$ref": "#/definitions/extendedboolean"
           },
-          "minItems": 1
+          "minItems": 1,
+          "examples": [
+            [{"and": [true, {"var": "isActive"}, {">": [{"var": "score"}, 80]}]}]
+          ]
         },
         "or": {
+          "description": "Returns true if any condition evaluates to true. Accepts one or more boolean expressions or values.",
           "type": "array",
           "items": {
             "$ref": "#/definitions/extendedboolean"
           },
-          "minItems": 1
+          "minItems": 1,
+          "examples": [
+            [{"or": [false, {"var": "isAdmin"}, {"<": [{"var": "attempts"}, 3]}]}]
+          ]
         },
         "!": {
+          "description": "Logical NOT operator. Returns the boolean negation of the input value. Can be used with a single value or a single-element array.",
           "oneOf": [
             {
               "type": "array",
@@ -42,10 +81,18 @@
                 "$ref": "#/definitions/extendedboolean"
               },
               "minItems": 1,
-              "maxItems": 1
+              "maxItems": 1,
+              "examples": [
+                [{"!": [{"var": "isDisabled"}]}],
+                [{"!": [true]}]
+              ]
             },
             {
-              "$ref": "#/definitions/extendedboolean"
+              "$ref": "#/definitions/extendedboolean",
+              "description": "Single value to negate",
+              "examples": [
+                [{"!": {"var": "isActive"}}]
+              ]
             }
           ]
         },
@@ -85,6 +132,7 @@
           "items": false
         },
         "==": {
+          "description": "Equality comparison. Returns true if all values are equal using loose equality (==).",
           "type": "array",
           "items": {
             "anyOf": [
@@ -98,6 +146,7 @@
           "maxItems": 2
         },
         "!=": {
+          "description": "Inequality comparison. Returns true if any values are not equal using loose equality (!=).",
           "type": "array",
           "items": {
             "anyOf": [
@@ -111,6 +160,7 @@
           "maxItems": 2
         },
         "===": {
+          "description": "Strict equality comparison. Returns true if all values are equal in both value and type (===).",
           "type": "array",
           "items": {
             "anyOf": [
@@ -121,9 +171,14 @@
             ]
           },
           "minItems": 2,
-          "maxItems": 2
+          "maxItems": 2,
+          "examples": [
+            [{"===": [{"var": "count"}, 5]}],
+            [{"===": [1, "1"], "comment": "Returns false due to different types"}]
+          ]
         },
         "!==": {
+          "description": "Strict inequality comparison. Returns true if any values are not equal in either value or type (!==).",
           "type": "array",
           "items": {
             "anyOf": [
@@ -134,41 +189,66 @@
             ]
           },
           "minItems": 2,
-          "maxItems": 2
+          "maxItems": 2,
+          "examples": [
+            [{"!==": [{"var": "count"}, "5"]}],
+            [{"!==": ["1", 1], "comment": "Returns true as types are different"}]
+          ]
         },
         "<=": {
+          "description": "Less than or equal comparison. Returns true if each value is less than or equal to the next value.",
           "type": "array",
           "items": {
             "$ref": "#/definitions/extendednumeral"
           },
           "minItems": 2,
-          "maxItems": 3
+          "maxItems": 3,
+          "examples": [
+            [{"<=": [{"var": "age"}, 18]}],
+            [{"<=": [1, 2, 3], "comment": "Returns true as 1 <= 2 <= 3"}]
+          ]
         },
         ">=": {
+          "description": "Greater than or equal comparison. Returns true if each value is greater than or equal to the next value.",
           "type": "array",
           "items": {
             "$ref": "#/definitions/extendednumeral"
           },
           "minItems": 2,
-          "maxItems": 3
+          "maxItems": 3,
+          "examples": [
+            [{">=": [{"var": "score"}, 60], "comment": "Passing grade check"}],
+            [{">=": [5, 4, 3], "comment": "Returns true as 5 >= 4 >= 3"}]
+          ]
         },
         "<": {
+          "description": "Less than comparison. Returns true if each value is less than the next value.",
           "type": "array",
           "items": {
             "$ref": "#/definitions/extendednumeral"
           },
           "minItems": 2,
-          "maxItems": 3
+          "maxItems": 3,
+          "examples": [
+            [{"<": [{"var": "age"}, 18], "comment": "Check if under 18"}],
+            [{"<": [1, 2, 3], "comment": "Returns true as 1 < 2 < 3"}]
+          ]
         },
         ">": {
+          "description": "Greater than comparison. Returns true if each value is greater than the next value.",
           "type": "array",
           "items": {
             "$ref": "#/definitions/extendednumeral"
           },
           "minItems": 2,
-          "maxItems": 3
+          "maxItems": 3,
+          "examples": [
+            [{">": [{"var": "score"}, 90], "comment": "Check for A grade"}],
+            [{">": [3, 2, 1], "comment": "Returns true as 3 > 2 > 1"}]
+          ]
         },
         "if": {
+          "description": "Conditional if-then-else operation. Evaluates the first argument as a condition. If true, returns the second argument; otherwise, returns the third argument.",
           "type": "array",
           "prefixItems": [
             {
@@ -184,9 +264,14 @@
             ]
           },
           "minItems": 3,
-          "maxItems": 3
+          "maxItems": 3,
+          "examples": [
+            [{"if": [{"var": "isMember"}, "Welcome back!", "Please sign up"]}],
+            [{"var": "discount", "if": [{"var": "isPremium"}, 0.2, 0.1]}]
+          ]
         },
         "all": {
+          "description": "Tests if all elements in an array satisfy a condition. The first argument is the array to test, and the second is a condition to apply to each element.",
           "type": "array",
           "prefixItems": [
             {
@@ -201,9 +286,16 @@
               ]
             }
           ],
-          "items": false
+          "minItems": 2,
+          "maxItems": 2,
+          "examples": [
+            [{"all": [[1, 2, 3], {">": [{"var": ""}, 0]}]}],
+            [{"all": [{"var": "items"}, {"var": "isValid"}]}],
+            [{"all": [["a", "b", "c"], {"!==": [{"var": ""}, ""]}], "comment": "Check all strings are non-empty"}]
+          ]
         },
         "none": {
+          "description": "Tests if no elements in an array satisfy a condition. The first argument is the array to test, and the second is a condition to apply to each element. Returns true if no elements pass the condition.",
           "type": "array",
           "prefixItems": [
             {
@@ -218,9 +310,15 @@
               ]
             }
           ],
-          "items": false
+          "minItems": 2,
+          "maxItems": 2,
+          "examples": [
+            [{"none": [[0, -1, -2], {">": [{"var": ""}, 0]}]}],
+            [{"none": [{"var": "blacklist"}, {"==": [{"var": ""}, "admin"]}], "comment": "Ensure no admin in blacklist"}]
+          ]
         },
         "some": {
+          "description": "Tests if at least one element in an array satisfies a condition. The first argument is the array to test, and the second is a condition to apply to each element. Returns true if any element passes the condition.",
           "type": "array",
           "prefixItems": [
             {
@@ -235,7 +333,12 @@
               ]
             }
           ],
-          "items": false
+          "minItems": 2,
+          "maxItems": 2,
+          "examples": [
+            [{"some": [[0, 1, 2], {">": [{"var": ""}, 0]}]}],
+            [{"some": [{"var": "roles"}, {"==": [{"var": ""}, "admin"]}], "comment": "Check if user has admin role"}]
+          ]
         },
         "ISEMPTY": {
           "type": "array",
@@ -252,129 +355,289 @@
       "maxProperties": 1
     },
     "numberoperations": {
-      "description": "any operation whose outcome is a number",
+      "description": "Numeric operations that perform calculations and return a number. Includes basic arithmetic, rounding, and mathematical functions.",
       "type": "object",
       "properties": {
         "and": {
+          "description": "Performs a bitwise AND operation on all numbers in the array. Returns the result of the bitwise operation.",
           "type": "array",
           "contains": {
             "$ref": "#/definitions/extendednumeral"
           },
-          "minItems": 1
+          "minItems": 1,
+          "examples": [
+            [{"and": [5, 3]}, "Returns 1 (5 & 3 = 1)"],
+            [{"and": [15, 3, 1]}, "Returns 1 (15 & 3 & 1 = 1)"]
+          ]
         },
         "or": {
+          "description": "Performs a bitwise OR operation on all numbers in the array. Returns the result of the bitwise operation.",
           "type": "array",
           "contains": {
             "$ref": "#/definitions/extendednumeral"
           },
-          "minItems": 1
+          "minItems": 1,
+          "examples": [
+            [{"or": [5, 3]}, "Returns 7 (5 | 3 = 7)"],
+            [{"or": [1, 2, 4]}, "Returns 7 (1 | 2 | 4 = 7)"]
+          ]
         },
         "+": {
+          "description": "Sums all numbers in the array. If only one number is provided, returns the number. For multiple numbers, returns their sum.",
           "type": "array",
           "items": {
             "$ref": "#/definitions/extendednumeral"
           },
-          "minItems": 1
+          "minItems": 1,
+          "examples": [
+            [{"+": [5]}, "Returns 5"],
+            [{"+": [1, 2, 3, 4]}, "Returns 10"],
+            [{"+": [{"var": "price"}, 10, 2.5]}, "Adds 10 and 2.5 to the price variable"]
+          ]
         },
         "^": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/extendednumeral"
-          },
-          "minItems": 2
-        },
-        "**": {
-          "type": "array",
-          "description": "Exponential calculation",
-          "items": {
-            "$ref": "#/definitions/extendednumeral"
-          },
-          "minItems": 2
-        },
-        "-": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/extendednumeral"
-          },
-          "minItems": 1
-        },
-        "*": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/extendednumeral"
-          },
-          "minItems": 2
-        },
-        "/": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/extendednumeral"
-          },
-          "minItems": 2
-        },
-        "%": {
+          "description": "Performs exponentiation. Raises the first number to the power of the second number. For more than two numbers, performs chained exponentiation (a^(b^(c^...))).",
           "type": "array",
           "items": {
             "$ref": "#/definitions/extendednumeral"
           },
           "minItems": 2,
-          "maxItems": 2
+          "examples": [
+            [{"^": [2, 3]}, "Returns 8 (2^3)"],
+            [{"^": [2, 3, 2]}, "Returns 512 (2^(3^2))"],
+            [{"^": [{"var": "base"}, {"var": "exponent"}]}, "Raises base to the power of exponent"]
+          ]
+        },
+        "**": {
+          "description": "Performs exponentiation (same as '^' operator). Raises the first number to the power of the second number. For more than two numbers, performs chained exponentiation.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/extendednumeral"
+          },
+          "minItems": 2,
+          "examples": [
+            [{"**": [2, 3]}, "Returns 8 (2^3)"],
+            [{"**": [3, 4]}, "Returns 81 (3^4)"],
+            [{"**": [{"var": "base"}, 2]}, "Squares the base variable"]
+          ]
+        },
+        "-": {
+          "description": "Performs subtraction. With one number, returns its negation. With multiple numbers, subtracts all subsequent numbers from the first number.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/extendednumeral"
+          },
+          "minItems": 1,
+          "examples": [
+            [{"-": [5]}, "Returns -5 (negation)"],
+            [{"-": [10, 2]}, "Returns 8 (10 - 2)"],
+            [{"-": [100, 20, 5]}, "Returns 75 (100 - 20 - 5)"],
+            [{"-": [{"var": "total"}, {"var": "discount"}]}, "Subtracts discount from total"]
+          ]
+        },
+        "*": {
+          "description": "Multiplies all numbers together. Requires at least two numbers.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/extendednumeral"
+          },
+          "minItems": 2,
+          "examples": [
+            [{"*": [3, 4]}, "Returns 12 (3 * 4)"],
+            [{"*": [2, 3, 4]}, "Returns 24 (2 * 3 * 4)"],
+            [{"*": [{"var": "quantity"}, {"var": "price"}]}, "Calculates total price"],
+            [{"*": [{"var": "base"}, 1.1]}, "Adds 10% to base amount"]
+          ]
+        },
+        "/": {
+          "description": "Divides numbers sequentially. The first number is divided by the second, then that result is divided by the third, and so on. Requires at least two numbers.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/extendednumeral"
+          },
+          "minItems": 2,
+          "examples": [
+            [{"/": [10, 2]}, "Returns 5 (10 / 2)"],
+            [{"/": [100, 2, 5]}, "Returns 10 (100 / 2 / 5)"],
+            [{"/": [{"*": [{"var": "total"}, 100]}, {"var": "base"}]}, "Calculates percentage"],
+            [{"/": [1, 2]}, "Returns 0.5 (floating-point division)"]
+          ]
+        },
+        "%": {
+          "description": "Performs modulo operation. Returns the remainder of dividing the first number by the second number. Uses the same sign as the dividend (first number).",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/extendednumeral"
+          },
+          "minItems": 2,
+          "maxItems": 2,
+          "examples": [
+            [{"%": [10, 3]}, "Returns 1 (10 ÷ 3 = 3 with remainder 1)"],
+            [{"%": [11, 2.5]}, "Returns 1 (11 ÷ 2.5 = 4 with remainder 1)"],
+            [{"%": [{"var": "value"}, 2]}, "Returns 0 for even numbers, 1 for odd"],
+            [{"==": [{"%": [{"var": "number"}, 5]}, 0]}, "Checks if number is divisible by 5"]
+          ]
         },
         "min": {
+          "description": "Returns the smallest number from the provided arguments. Works with any number of numeric values.",
           "type": "array",
           "items": {
             "$ref": "#/definitions/extendednumeral"
           },
-          "minItems": 2
+          "minItems": 1,
+          "examples": [
+            [{"min": [1, 2, 3]}, "Returns 1"],
+            [{"min": [-5, 0, 5]}, "Returns -5"],
+            [{"min": [{"var": "score1"}, {"var": "score2"}, 50]}, "Returns the lowest score or 50, whichever is lower"],
+            [{"min": [{"var": "values"}]}, "Returns the minimum value from the 'values' array"]
+          ]
         },
         "max": {
+          "description": "Returns the largest number from the provided arguments. Works with any number of numeric values.",
           "type": "array",
           "items": {
             "$ref": "#/definitions/extendednumeral"
           },
-          "minItems": 2
+          "minItems": 1,
+          "examples": [
+            [{"max": [1, 2, 3]}, "Returns 3"],
+            [{"max": [-5, 0, 5]}, "Returns 5"],
+            [{"max": [{"var": "score1"}, {"var": "score2"}, 50]}, "Returns the highest score or 50, whichever is higher"],
+            [{"max": [{"var": "values"}]}, "Returns the maximum value from the 'values' array"]
+          ]
         },
         "reduce": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/extendednumeral"
-          }
-        },
-        "ROUND": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/extendednumeral"
-          },
-          "maxItems": 1
-        },
-        "ROUNDUP": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/extendednumeral"
-          },
-          "maxItems": 1
-        },
-        "ROUNDDOWN": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/extendednumeral"
-          },
-          "maxItems": 1
-        },
-        "SUM": {
+          "description": "Applies a function against an accumulator and each element in the array (from left to right) to reduce it to a single value. The first argument is the array to reduce, and the second is the reducer function that takes (accumulator, currentValue, index, array). An initial value can be provided as a third argument.",
           "type": "array",
           "prefixItems": [
             {
-              "$ref": "#/definitions/extendedarray"
+              "description": "The array to reduce",
+              "anyOf": [
+                {
+                  "type": "array"
+                },
+                {
+                  "$ref": "#/definitions/extendedarray"
+                }
+              ]
             },
             {
-              "$ref": "#/definitions/extendedstring"
+              "description": "Reducer function that processes each item",
+              "type": "object"
             },
             {
-              "$ref": "#/definitions/extendednumeral"
+              "description": "Optional initial value for the accumulator",
+              "anyOf": [
+                {
+                  "type": ["number", "string", "boolean", "null"]
+                },
+                {
+                  "type": "object"
+                },
+                {
+                  "type": "array"
+                }
+              ]
             }
           ],
-          "items": false
+          "items": false,
+          "minItems": 2,
+          "maxItems": 3,
+          "examples": [
+            [{"reduce": [[1, 2, 3, 4], {"+": [{"var": "accumulator"}, {"var": "current"}]}, 0]}, "Sums all numbers in array (returns 10)"],
+            [{"reduce": [{"var": "items"}, {"+": [{"var": "accumulator"}, {"var": "current.quantity"}]}, 0]}, "Sums all quantity properties in items array"]
+          ]
+        },
+        "ROUND": {
+          "description": "Rounds a number to a specified number of decimal places. If the second argument is omitted, rounds to the nearest integer. If the second argument is negative, rounds to the left of the decimal point.",
+          "type": "array",
+          "prefixItems": [
+            {
+              "$ref": "#/definitions/extendednumeral",
+              "description": "The number to round"
+            },
+            {
+              "type": ["number", "null"],
+              "default": 0,
+              "description": "Number of decimal places (default: 0). Can be negative to round to tens, hundreds, etc."
+            }
+          ],
+          "items": false,
+          "examples": [
+            [{"ROUND": [3.14159]}, "Returns 3"],
+            [{"ROUND": [3.14159, 2]}, "Returns 3.14"],
+            [{"ROUND": [123.456, -1]}, "Returns 120 (rounds to nearest 10)"],
+            [{"ROUND": [{"var": "price"}, 2]}, "Rounds price to 2 decimal places"]
+          ]
+        },
+        "ROUNDUP": {
+          "description": "Rounds a number up, away from zero, to a specified number of decimal places. If the second argument is omitted, rounds up to the nearest integer. If the second argument is negative, rounds up to the left of the decimal point.",
+          "type": "array",
+          "prefixItems": [
+            {
+              "$ref": "#/definitions/extendednumeral",
+              "description": "The number to round up"
+            },
+            {
+              "type": ["number", "null"],
+              "default": 0,
+              "description": "Number of decimal places (default: 0). Can be negative to round up to tens, hundreds, etc."
+            }
+          ],
+          "items": false,
+          "examples": [
+            [{"ROUNDUP": [3.14159]}, "Returns 4"],
+            [{"ROUNDUP": [3.14159, 2]}, "Returns 3.15"],
+            [{"ROUNDUP": [123.456, -1]}, "Returns 130 (rounds up to next 10)"],
+            [{"ROUNDUP": [{"var": "price"}, 2]}, "Rounds price up to 2 decimal places"]
+          ]
+        },
+        "ROUNDDOWN": {
+          "description": "Rounds a number down, toward zero, to a specified number of decimal places. If the second argument is omitted, rounds down to the nearest integer. If the second argument is negative, rounds down to the left of the decimal point.",
+          "type": "array",
+          "prefixItems": [
+            {
+              "$ref": "#/definitions/extendednumeral",
+              "description": "The number to round down"
+            },
+            {
+              "type": ["number", "null"],
+              "default": 0,
+              "description": "Number of decimal places (default: 0). Can be negative to round down to tens, hundreds, etc."
+            }
+          ],
+          "items": false,
+          "examples": [
+            [{"ROUNDDOWN": [3.9]}, "Returns 3"],
+            [{"ROUNDDOWN": [3.14159, 2]}, "Returns 3.14"],
+            [{"ROUNDDOWN": [129.99, -1]}, "Returns 120 (rounds down to previous 10)"],
+            [{"ROUNDDOWN": [{"var": "price"}, 2]}, "Rounds price down to 2 decimal places"]
+          ]
+        },
+        "SUM": {
+          "description": "Calculates the sum of values. Can sum numbers in an array, values in an object array by property, or a combination of both.",
+          "type": "array",
+          "prefixItems": [
+            {
+              "$ref": "#/definitions/extendedarray",
+              "description": "Array of numbers to sum, or array of objects to sum property values from"
+            },
+            {
+              "$ref": "#/definitions/extendedstring",
+              "description": "Optional property name to sum from objects in the array"
+            },
+            {
+              "$ref": "#/definitions/extendednumeral",
+              "description": "Optional initial value to start the sum from"
+            }
+          ],
+          "items": false,
+          "examples": [
+            [{"SUM": [[1, 2, 3, 4]]}, "Sums array of numbers, returns 10"],
+            [{"SUM": [{"var": "items"}, "price"]}, "Sums 'price' property from each item in the items array"],
+            [{"SUM": [{"var": "values"}, null, 100]}, "Sums values starting from 100"],
+            [{"SUM": [1, 2, 3, 4]}, "Sums individual numbers, returns 10"]
+          ]
         }
       },
       "additionalProperties": false,
@@ -382,28 +645,43 @@
       "maxProperties": 1
     },
     "arrayoperations": {
-      "description": "any operation whose outcome is an array",
+      "description": "Operations that process or transform arrays. Includes mapping, filtering, merging, and other array manipulations.",
       "type": "object",
       "properties": {
         "and": {
+          "description": "Performs a logical AND operation on multiple arrays. Returns true if all arrays contain at least one truthy value. Each array is considered truthy if it has at least one element.",
           "type": "array",
           "contains": {
             "$ref": "#/definitions/extendedarray"
           },
-          "minItems": 1
+          "minItems": 1,
+          "examples": [
+            [{"and": [[1, 2], [3, 4]]}, "Returns true (both arrays are non-empty)"],
+            [{"and": [[1, 2], []]}, "Returns false (second array is empty)"],
+            [{"and": [{"var": "array1"}, {"var": "array2"}]}, "Returns true only if both variables contain non-empty arrays"]
+          ]
         },
         "or": {
+          "description": "Performs a logical OR operation on multiple arrays. Returns true if at least one array contains a truthy value. Each array is considered truthy if it has at least one element.",
           "type": "array",
           "contains": {
             "$ref": "#/definitions/extendedarray"
           },
-          "minItems": 1
+          "minItems": 1,
+          "examples": [
+            [{"or": [[1, 2], []]}, "Returns true (first array is non-empty)"],
+            [{"or": [[], [3, 4]]}, "Returns true (second array is non-empty)"],
+            [{"or": [[], []]}, "Returns false (both arrays are empty)"],
+            [{"or": [{"var": "array1"}, {"var": "array2"}]}, "Returns true if either variable contains a non-empty array"]
+          ]
         },
         "map": {
+          "description": "Creates a new array by applying a transformation function to each element of the input array. The first argument is the array to map over, and the second is the transformation function that processes each element.",
           "type": "array",
           "prefixItems": [
             {
-              "$ref": "#/definitions/extendedarray"
+              "$ref": "#/definitions/extendedarray",
+              "description": "The array to map over"
             },
             {
               "anyOf": [
@@ -412,50 +690,123 @@
                 { "$ref": "#/definitions/arrayoperations" },
                 { "$ref": "#/definitions/logicaloperations" },
                 { "$ref": "#/definitions/customoperations" },
-                { "$ref": "#/definitions/exceloperations" }
-              ]
+                { "$ref": "#/definitions/exceloperations" },
+                { "$ref": "#/definitions/valuereference" },
+                { "$ref": "#/definitions/objectoperations" }
+              ],
+              "description": "Transformation function to apply to each element. Can reference the current element with {\"var\": \"current\"} and the current index with {\"var\": \"index\"}."
             }
           ],
-          "items": false
+          "items": false,
+          "minItems": 2,
+          "maxItems": 2,
+          "examples": [
+            [{"map": [[1, 2, 3], {"*": [{"var": "current"}, 2]}]}, "Returns [2, 4, 6]"],
+            [{"map": [{"var": "items"}, {"var": "current.name"}]}, "Extracts the 'name' property from each item in the items array"],
+            [{"map": [{"var": "numbers"}, {"+": [{"var": "current"}, 10]}]}, "Adds 10 to each number in the array"]
+          ]
         },
         "filter": {
+          "description": "Creates a new array with all elements that pass the test implemented by the provided function. The first argument is the array to filter, and the second is the test function or value to match against.",
           "type": "array",
           "prefixItems": [
             {
-              "$ref": "#/definitions/extendedarray"
+              "$ref": "#/definitions/extendedarray",
+              "description": "The array to filter"
             },
             {
               "anyOf": [
-                { "$ref": "#/definitions/extendedarray" },
-                { "$ref": "#/definitions/extendedstring" },
-                { "$ref": "#/definitions/extendednumeral" },
-                { "$ref": "#/definitions/extendedboolean" }
-              ]
+                { 
+                  "$ref": "#/definitions/extendedarray",
+                  "description": "Array of values to include in the result"
+                },
+                { 
+                  "$ref": "#/definitions/extendedstring",
+                  "description": "Property name to filter by (keeps elements where this property is truthy)"
+                },
+                { 
+                  "$ref": "#/definitions/extendednumeral",
+                  "description": "Numeric value to match exactly"
+                },
+                { 
+                  "$ref": "#/definitions/extendedboolean",
+                  "description": "Boolean value to match exactly"
+                },
+                {
+                  "type": "object",
+                  "description": "Test function that returns true to keep the element or false to exclude it. Can reference the current element with {\"var\": \"current\"} and the current index with {\"var\": \"index\"}."
+                }
+              ],
+              "description": "Test function or value to filter by"
             }
           ],
-          "items": false
+          "items": false,
+          "minItems": 2,
+          "maxItems": 2,
+          "examples": [
+            [{"filter": [[1, 2, 3, 4, 5], {">": [{"var": "current"}, 2]}]}, "Returns [3, 4, 5] (numbers greater than 2)"],
+            [{"filter": [{"var": "products"}, {"var": "current.inStock"}]}, "Returns products where inStock is true"],
+            [{"filter": [{"var": "users"}, {"==": [{"var": "current.role"}, "admin"]}]}, "Returns users with role 'admin'"],
+            [{"filter": [[1, 2, 3, 2, 1], 2]}, "Returns [2, 2] (matches value exactly)"]
+          ]
         },
         "merge": {
+          "description": "Creates a new array that is the concatenation of all the provided arrays and/or values. This operation flattens the result by one level.",
           "type": "array",
           "items": {
             "anyOf": [
-              { "$ref": "#/definitions/extendedarray" },
-              { "$ref": "#/definitions/extendedstring" },
-              { "$ref": "#/definitions/extendednumeral" },
-              { "$ref": "#/definitions/extendedboolean" }
+              { 
+                "$ref": "#/definitions/extendedarray",
+                "description": "Array to include in the merged result"
+              },
+              { 
+                "$ref": "#/definitions/extendedstring",
+                "description": "String value to include in the result"
+              },
+              { 
+                "$ref": "#/definitions/extendednumeral",
+                "description": "Number to include in the result"
+              },
+              { 
+                "$ref": "#/definitions/extendedboolean",
+                "description": "Boolean value to include in the result"
+              }
             ]
-          }
+          },
+          "minItems": 1,
+          "examples": [
+            [{"merge": [[1, 2], [3, 4]]}, "Returns [1, 2, 3, 4]"],
+            [{"merge": [{"var": "array1"}, [5, 6], {"var": "array2"}]}, "Concatenates array1, [5, 6], and array2"],
+            [{"merge": [1, [2, 3], 4]}, "Returns [1, 2, 3, 4] (flattens one level)"],
+            [{"merge": [[1, 2], [3, [4, 5]]]}, "Returns [1, 2, 3, [4, 5]] (only flattens one level)"]
+          ]
         },
         "missing": {
+          "description": "Returns an array of any keys or indices that are missing from the provided data context. Useful for validating required fields in forms or data structures.",
           "type": "array",
           "items": {
             "anyOf": [
-              { "$ref": "#/definitions/extendedarray" },
-              { "$ref": "#/definitions/extendedstring" },
-              { "$ref": "#/definitions/extendednumeral" },
-              { "$ref": "#/definitions/extendedboolean" }
+              { 
+                "$ref": "#/definitions/extendedstring",
+                "description": "Key name to check for existence in the data context"
+              },
+              { 
+                "$ref": "#/definitions/extendednumeral",
+                "description": "Numeric index to check for existence in an array"
+              },
+              {
+                "type": "array",
+                "description": "Array of keys/indices to check for existence"
+              }
             ]
-          }
+          },
+          "minItems": 1,
+          "examples": [
+            [{"missing": ["firstName", "lastName"]}, "Returns an array of any missing required fields"],
+            [{"missing": [{"var": "requiredFields"}]}, "Checks which required fields are missing from the data"],
+            [{"missing": [0, 1, 2]}, "Returns any missing array indices (0, 1, or 2) that don't exist"],
+            [{"missing": ["email"]}, "Returns ['email'] if the email field is missing, otherwise returns an empty array"]
+          ]
         }
       },
       "additionalProperties": false,
@@ -463,7 +814,7 @@
       "maxProperties": 1
     },
     "stringoperations": {
-      "description": "any operation whose outcome is a string",
+      "description": "Operations that manipulate or process strings. Includes concatenation, substring extraction, and other string transformations.",
       "type": "object",
       "properties": {
         "and": {
@@ -517,7 +868,7 @@
       "maxProperties": 1
     },
     "customoperations": {
-      "description": "any custom operation",
+      "description": "Custom operations that can be extended or defined by the implementation. Allows for adding domain-specific functionality.",
       "type": "object",
       "properties": {
         "customFunction": {
@@ -533,7 +884,7 @@
       "maxProperties": 1
     },
     "exceloperations": {
-      "description": "any excel function operation",
+      "description": "Excel-like functions including date manipulation, text processing, and lookup operations. Provides spreadsheet-like functionality within the schema.",
       "type": "object",
       "properties": {
         "NOW": {
@@ -612,6 +963,21 @@
             "$ref": "#/definitions/extendedarray"
           },
           "minItems": 3
+        },
+        "FINDINDEX": {
+          "type": "array",
+          "prefixItems": [
+            {
+              "description": "The array or map to search in"
+            },
+            {
+              "$ref": "#/definitions/logicalCondition"
+            }
+          ],
+          "minItems": 2,
+          "maxItems": 2,
+          "additionalItems": false,
+          "description": "Finds the index of the first element in the array that matches all the specified conditions"
         },
         "MAXAT": {
           "type": "array",
@@ -810,7 +1176,7 @@
       "maxProperties": 1
     },
     "valuereference": {
-      "description": "dynamic reference to a value",
+      "description": "References to values that can be dynamically resolved. Includes variable references, null checks, and conditional value selection.",
       "type": "object",
       "properties": {
         "var": {
@@ -875,7 +1241,7 @@
       "additionalProperties": false
     },
     "extendedboolean": {
-      "description": "any value, function or reference that behaves like a boolean when resolved",
+      "description": "A value that can be resolved to a boolean. Can be a direct boolean, a logical operation, or a reference that evaluates to a boolean.",
       "oneOf": [
         {
           "type": "boolean"
@@ -889,7 +1255,7 @@
       ]
     },
     "extendednumeral": {
-      "description": "any value, function or reference that behaves like a number when resolved",
+      "description": "A value that can be resolved to a number. Includes direct numbers, numeric strings, references, and numeric operations.",
       "oneOf": [
         {
           "type": "number"
@@ -935,7 +1301,7 @@
       ]
     },
     "extendedstring": {
-      "description": "any value, function or reference that behaves like a string when resolved",
+      "description": "A value that can be resolved to a string. Includes direct strings, string operations, and references that evaluate to strings.",
       "oneOf": [
         {
           "type": "string"
@@ -973,7 +1339,7 @@
       ]
     },
     "extendedarray": {
-      "description": "any value, function or reference that behaves like an array when resolved",
+      "description": "A value that can be resolved to an array. Includes direct arrays, array operations, and references that evaluate to arrays. Can contain any JSON-compatible value type.",
       "oneOf": [
         {
           "type": ["array", "string", "number", "boolean"]
